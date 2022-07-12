@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">7_CountriesMVVM</string>
+    <string name="app_name">Country list</string>
+
+    <string name="lbl_country_error">An error occurred loading data</string>
 </resources>
