@@ -52,7 +52,9 @@ class MainActivity : AppCompatActivity() {
         //Observing the list of countries
         viewModel.lstCountry.observe(this, Observer { lstCountry ->
             lstCountry?.let {
+                rviCountries.visibility = View.VISIBLE
                 countryAdapter.updateCountries(it)
+                progressBar.visibility = View.GONE
             }
         })
 

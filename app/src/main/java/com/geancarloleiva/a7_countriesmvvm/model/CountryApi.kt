@@ -8,5 +8,5 @@ import retrofit2.http.GET
 interface CountryApi {
 
     @GET(GET_COUNTRIES_API)
-    fun getCountries(): Single<List<Country>>
+    fun getCountries(): Single<List<Country>> //Single is an observable that emmit 1 value and then closes
 }

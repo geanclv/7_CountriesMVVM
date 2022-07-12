@@ -3,8 +3,17 @@ package com.geancarloleiva.a7_countriesmvvm.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.geancarloleiva.a7_countriesmvvm.Country
+import com.geancarloleiva.a7_countriesmvvm.model.CountryService
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ListViewModel: ViewModel() {
+
+    private val countryService = CountryService()
+    //Used to close connection to the backend
+    private val disposable = CompositeDisposable()
 
     /* Implementing reactivity (observer pattern) */
     //Live data: a component can subscribe to it, and it'll be notified automatically when the data change
@@ -19,19 +28,28 @@ class ListViewModel: ViewModel() {
     }
 
     private fun fetchCountries(){
-        //TODO: mocking data (instead of loading from backend)
-        val mockData = listOf<Country>(
-            Country("ABC0"),
-            Country("ABC1"),
-            Country("ABC2"),
-            Country("ABC3"),
-            Country("ABC4"),
-            Country("ABC5"),
-            Country("ABC6")
-        )
+        loading.value = true
+        disposable.add(
+            countryService.getCountries()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<List<Country>>(){
+                    override fun onSuccess(value: List<Country>) {
+                        lstCountry.value = value
+                        countryLoadError.value = false
+                        loading.value = false
+                    }
 
-        countryLoadError.value = false
-        loading.value = false
-        lstCountry.value = mockData
+                    override fun onError(e: Throwable) {
+                        countryLoadError.value = true
+                        loading.value = false
+                    }
+                })
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }
