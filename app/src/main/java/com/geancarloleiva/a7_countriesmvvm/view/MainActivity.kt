@@ -1,7 +1,8 @@
-package com.geancarloleiva.a7_countriesmvvm
+package com.geancarloleiva.a7_countriesmvvm.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.geancarloleiva.a7_countriesmvvm.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
