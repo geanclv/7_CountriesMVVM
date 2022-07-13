@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.geancarloleiva.a7_countriesmvvm.Country
 import com.geancarloleiva.a7_countriesmvvm.R
 import com.geancarloleiva.a7_countriesmvvm.viewmodel.ListViewModel
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ListViewModel
     private lateinit var countryAdapter: CountryListAdapter
     private lateinit var rviCountries: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,15 @@ class MainActivity : AppCompatActivity() {
         rviCountries.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = countryAdapter
+        }
+
+        //Managing the swipe in SwipeLayout
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            //Hiding the SwipeLayout spinner
+            swipeRefreshLayout.isRefreshing = false
+            //Refreshing the data
+            viewModel.refresh()
         }
 
         observeViewModel()
