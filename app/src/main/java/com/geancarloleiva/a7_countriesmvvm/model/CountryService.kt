@@ -1,24 +1,18 @@
 package com.geancarloleiva.a7_countriesmvvm.model
 
 import com.geancarloleiva.a7_countriesmvvm.Country
-import com.geancarloleiva.a7_countriesmvvm.util.BASE_URL
+import com.geancarloleiva.a7_countriesmvvm.dependencyInjection.DaggerApiComponent
 import io.reactivex.rxjava3.core.Single
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class CountryService {
 
-    private val countryApi: CountryApi
+    //Injecting the CountryApi (after this the project must be ReBuild)
+    @Inject
+    lateinit var countryApi: CountryApi
 
     init {
-        countryApi = Retrofit
-            .Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-            .create(CountryApi::class.java)
+        DaggerApiComponent.create().inject(this)
     }
 
     fun getCountries(): Single<List<Country>>{
