@@ -3,15 +3,22 @@ package com.geancarloleiva.a7_countriesmvvm.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.geancarloleiva.a7_countriesmvvm.Country
+import com.geancarloleiva.a7_countriesmvvm.dependencyInjection.DaggerApiComponent
 import com.geancarloleiva.a7_countriesmvvm.model.CountryService
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
 class ListViewModel: ViewModel() {
 
-    private val countryService = CountryService()
+    //Injecting the CountryService
+    @Inject
+    lateinit var countryService: CountryService
+    init {
+        DaggerApiComponent.create().inject(this)
+    }
     //Used to close connection to the backend
     private val disposable = CompositeDisposable()
 

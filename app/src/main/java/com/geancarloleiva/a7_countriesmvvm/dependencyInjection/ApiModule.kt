@@ -1,6 +1,7 @@
 package com.geancarloleiva.a7_countriesmvvm.dependencyInjection
 
 import com.geancarloleiva.a7_countriesmvvm.model.CountryApi
+import com.geancarloleiva.a7_countriesmvvm.model.CountryService
 import com.geancarloleiva.a7_countriesmvvm.util.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -21,5 +22,10 @@ class ApiModule {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(CountryApi::class.java)
+    }
+
+    @Provides
+    fun provideCountriesService(): CountryService {
+        return CountryService()
     }
 }
